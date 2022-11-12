@@ -1,6 +1,7 @@
 ﻿using CSRedis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -14,21 +15,16 @@ using Training.Domain.DTO;
 using Training.Domain.Entity;
 using Training.EFCore;
 
-
 namespace Training.Services.Service
 {
-    public class JWTService
+    public class JWTService : IJWTService
     {
         public IRespotry<User> User;
-        public IRespotry<JWT> JWT;
         public IConfiguration Configuration;
-        public IDesignerHost designerHost;
-        public JWTService(IRespotry<User> User,IRespotry<JWT> JWT,IConfiguration configuration, IDesignerHost designerHost)
+        public JWTService(IRespotry<User> User, IConfiguration configuration)
         {
             this.User = User;
-            this.JWT = JWT;
             this.Configuration = configuration;
-            this.designerHost = designerHost;
         }
 
         /// <summary>
@@ -37,7 +33,7 @@ namespace Training.Services.Service
         /// <param name="account"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public User Login(string account, string password)
+        public object Login(string account, string password)
         {
             //查询用户
             var user = User.GetList().Where(x => x.account == account && x.password == password).FirstOrDefault();
@@ -45,7 +41,20 @@ namespace Training.Services.Service
             {
                 return null;
             }
-            return user;
+            JWT jwt = new JWT()
+            {
+                Uid = user.Id,
+                verification_JWT = GetNewJWT(user, 1),
+                renovation_JWT = GetNewJWT(user, 3)
+            };
+            
+            
+            var Res = AddRedis(jwt, user.Id);
+            return new
+            {
+                Token = jwt.verification_JWT,
+                Msg = "登录成功"
+            };
         }
 
         /// <summary>
@@ -99,30 +108,65 @@ namespace Training.Services.Service
             return tokenHand.WriteToken(token);
         }
 
-        //private string AddRedis(JWT jwt,int uid)
-        //{
-        //    CSRedisClient redis = new CSRedisClient("127.0.0.1:6379");
-        //    RedisHelper.Initialization(redis);
-
-        //    var lis = redis.HGet("Training",uid.ToString());
-
-        //    //解释CreateTransaction:创建一个事务
-        //    //使用事务
-        //    using (var tran = designerHost.CreateTransaction())
-        //    {
-        //        try
-        //        {
-        //            if (!string.IsNullOrEmpty(lis))
-        //            {
-
-        //            }
-        //        }
-        //        catch (Exception)
-        //        {
-
-        //            throw;
-        //        }
-        //    }
-        //}
+        /// <summary>
+        /// 将JWT放入Redis
+        /// </summary>
+        /// <param name="jwt"></param>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        private string AddRedis(JWT jwt, int uid)
+        {
+            CSRedisClient redis = new CSRedisClient("127.0.0.1:6379");
+            RedisHelper.Initialization(redis);
+            redis.Set(uid.ToString(), jwt);
+            return "插入成功";
+        }
+        /// <summary>
+        /// 判断验证Token和刷新Token是否过期
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public string GetToken(string token)
+        {
+            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+            //反编译token
+            var jwt = new JwtSecurityToken(token);
+            //payload:获取到当前token的负载
+            //解释exp 为过期时间
+            var exp = jwt.Payload["exp"].ToString();
+            //格式转换exp
+            var expTime = startTime.AddSeconds(long.Parse(exp));
+            if (expTime < DateTime.Now)
+            {
+                CSRedisClient redis = new CSRedisClient("127.0.0.1:6379");
+                RedisHelper.Initialization(redis);
+                var uid = jwt.Payload["Uid"].ToString();
+                var jwtNow = redis.Get<JWT>(uid);
+                var jwt2 = new JwtSecurityToken(jwtNow.renovation_JWT);
+                var renovation_exp = jwt2.Payload["exp"].ToString();
+                var renovation_expTime = startTime.AddSeconds(long.Parse(renovation_exp));
+                if (renovation_expTime > DateTime.Now && token == jwtNow.verification_JWT)
+                {
+                    User user = new User()
+                    {
+                        Id = Convert.ToInt32(jwt.Payload["Uid"]),
+                        account = jwt.Payload["Uname"].ToString(),
+                    };
+                    JWT newjwt = new JWT();
+                    newjwt.verification_JWT = GetNewJWT(user, 1);
+                    newjwt.renovation_JWT = GetNewJWT(user, 3);
+                    redis.Set(uid.ToString(), newjwt);
+                    return newjwt.verification_JWT;
+                }
+            else
+            {
+                return "0";
+            }
+            }
+            else
+            {
+                return token;
+            }
+        }
     }
 }

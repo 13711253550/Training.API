@@ -1,15 +1,22 @@
 using Autofac;
+using AutoMapper;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 using Training.EFCore;
 using Training.EFCore.Context;
 using Training.Services.Service;
+using Training.Domain.Entity;
+using Training.Domain.Shard;
+using Training.API;
+using Newtonsoft.Json.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
+//builder.Services.AddAutofac(new AutofacServiceProviderFactory());
 
 
 //开启JWT认证
@@ -41,26 +48,28 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
-//Event事件:如果Bearer认证失败调用
-//builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
-//{
-//    options.Events = new JwtBearerEvents
-//    {
-//        OnAuthenticationFailed = context =>
-//        {
-//            //如果Token过期
-//            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-//            {
-//                //调用JWTService方法 刷新Token
-//                var jwtService = context.HttpContext.RequestServices.GetRequiredService<IJWTService>();
-//                var token = jwtService.GetToken(context.Request.Headers["Authorization"].ToString().Replace("Bearer ", ""));
-//                //将新的Token写入到响应头中
-//                context.Response.Headers.Add("Authorization", "Bearer " + token);
-//            }
-//            return Task.CompletedTask;
-//        }
-//    };
-//});
+//Event事件: 如果Bearer认证失败调用
+builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+{
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            //如果Token过期
+            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+            {
+                //调用JWTService方法 刷新Token
+                var jwtService = context.HttpContext.RequestServices.GetRequiredService<IJWTService>();
+                var token = jwtService.GetToken(context.Request.Headers["Authorization"].ToString().Replace("Bearer ", ""));
+                //将新的Token写入到响应头中
+                context.Response.Headers.Add("Authorization",token);
+                //暴露前端自定义头部字段
+                context.Response.Headers.Add("Access-Control-Expose-Headers", "Authorization");
+            }
+            return Task.CompletedTask;
+        }
+    };
+});
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -82,15 +91,18 @@ if (builder.Configuration["SQL"] == "MySQL")
 else
 {
     //使用MySql数据库
-    builder.Services.AddDbContext<SqlContext>(x => x.UseMySql(builder.Configuration.GetConnectionString("MySql"), MySqlServerVersion.LatestSupportedServerVersion));
+    //解释MySqlServerVersion.LatestSupportedServerVersion
+    //这个类是用来配置MySql的版本的
+    builder.Services.AddDbContext<SqlContext>(x => x.UseMySql(builder.Configuration.GetConnectionString("MySql"), new MySqlServerVersion(new Version(8, 0, 22))));
 }
 
-
 //AutoFac自动注册
-var buliders = new ContainerBuilder();
-buliders.RegisterAssemblyTypes(typeof(OrderService).Assembly).Where(x => x.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerDependency();
-//泛型 注册
-buliders.RegisterGeneric(typeof(Respotry<>)).As(typeof(IRespotry<>)).InstancePerDependency();
+//解释:builder.Host.UseServiceProviderFactory()
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>(builder =>
+{
+    //解释:
+    builder.RegisterModule(new AutofacModuleRegister());
+});
 
 
 var app = builder.Build();

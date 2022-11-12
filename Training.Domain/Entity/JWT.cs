@@ -8,8 +8,17 @@ namespace Training.Domain.Entity
 {
     public class JWT : Base
     {
+        /// <summary>
+        /// 用户Id
+        /// </summary>
         public int    Uid               { get; set; }
+        /// <summary>
+        /// 验证JWT
+        /// </summary>
         public string verification_JWT  { get; set; }
+        /// <summary>
+        /// 刷新JWT
+        /// </summary>
         public string renovation_JWT    { get; set; }
     }
 }
