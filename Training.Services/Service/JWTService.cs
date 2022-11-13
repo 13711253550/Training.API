@@ -13,7 +13,10 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Training.Domain.DTO;
 using Training.Domain.Entity;
+using Training.Domain.Entity.JWT;
+using Training.Domain.Shard;
 using Training.EFCore;
+using Training.Services.IService;
 
 namespace Training.Services.Service
 {
@@ -33,10 +36,10 @@ namespace Training.Services.Service
         /// <param name="account"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public object Login(string account, string password)
+        public Result<string> Login(LoginDTO login)
         {
             //查询用户
-            var user = User.GetList().Where(x => x.account == account && x.password == password).FirstOrDefault();
+            var user = User.GetList().Where(x => x.account == login.account && x.password == login.password).FirstOrDefault();
             if (user == null)
             {
                 return null;
@@ -45,15 +48,16 @@ namespace Training.Services.Service
             {
                 Uid = user.Id,
                 verification_JWT = GetNewJWT(user, 1),
-                renovation_JWT = GetNewJWT(user, 3)
+                renovation_JWT = GetNewJWT(user, 300)
             };
-            
-            
+
+
             var Res = AddRedis(jwt, user.Id);
-            return new
+            return new Result<string>()
             {
-                Token = jwt.verification_JWT,
-                Msg = "登录成功"
+                code = stateEnum.Success,
+                message = "登录成功",
+                data = jwt.verification_JWT
             };
         }
 
@@ -76,7 +80,7 @@ namespace Training.Services.Service
         /// <param name="user"></param>
         /// <param name="Type"></param>
         /// <returns></returns>
-        private string GetNewJWT(User user, int Type)
+        private string GetNewJWT(User user, int Time)
         {
             //解释JwtSecurityTokenHandler类型: JWT安全令牌处理程序类
             var tokenHand = new JwtSecurityTokenHandler();
@@ -94,7 +98,7 @@ namespace Training.Services.Service
                      new Claim(ClaimDTO.Uname, user.account),
                  }),
                 //解释Expires 这个属性是用来设置Token的过期时间的
-                Expires = DateTime.Now.AddMinutes(Type),
+                Expires = DateTime.Now.AddMinutes(Time),
                 //解释Issuer 这个属性是用来设置Token的颁发者的
                 Issuer = "http://localhost:5041",
                 //解释Audience 这个属性是用来设置Token的接收者的
@@ -121,6 +125,7 @@ namespace Training.Services.Service
             redis.Set(uid.ToString(), jwt);
             return "插入成功";
         }
+
         /// <summary>
         /// 判断验证Token和刷新Token是否过期
         /// </summary>
@@ -130,7 +135,12 @@ namespace Training.Services.Service
         {
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
             //反编译token
+            if (token == null || token == "0")
+            {
+                return "0";
+            }
             var jwt = new JwtSecurityToken(token);
+
             //payload:获取到当前token的负载
             //解释exp 为过期时间
             var exp = jwt.Payload["exp"].ToString();
@@ -154,14 +164,14 @@ namespace Training.Services.Service
                     };
                     JWT newjwt = new JWT();
                     newjwt.verification_JWT = GetNewJWT(user, 1);
-                    newjwt.renovation_JWT = GetNewJWT(user, 3);
+                    newjwt.renovation_JWT = GetNewJWT(user, 300);
                     redis.Set(uid.ToString(), newjwt);
                     return newjwt.verification_JWT;
                 }
-            else
-            {
-                return "0";
-            }
+                else
+                {
+                    return "0";
+                }
             }
             else
             {

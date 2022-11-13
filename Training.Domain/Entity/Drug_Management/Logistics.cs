@@ -4,20 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Training.Domain.Shard
+namespace Training.Domain.Entity.Drug_Management
 {
     /// <summary>
-    /// 状态码枚举
+    /// 物流公司表
     /// </summary>
-    public enum stateEnum
+    public class Logistics : Base
     {
         /// <summary>
-        /// 成功
+        /// 物流公司名称		
         /// </summary>
-        Success = 20000,
-        /// <summary>
-        /// 失败
-        /// </summary>
-        Error = 500,
+        public string logistics_company_name { get; set; }
     }
 }

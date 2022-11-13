@@ -14,6 +14,8 @@ using Training.Domain.Entity;
 using Training.Domain.Shard;
 using Training.API;
 using Newtonsoft.Json.Linq;
+using Training.Services;
+using Training.Services.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddAutofac(new AutofacServiceProviderFactory());
@@ -58,11 +60,7 @@ builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSch
             //如果Token过期
             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
             {
-                //调用JWTService方法 刷新Token
-                var jwtService = context.HttpContext.RequestServices.GetRequiredService<IJWTService>();
-                var token = jwtService.GetToken(context.Request.Headers["Authorization"].ToString().Replace("Bearer ", ""));
-                //将新的Token写入到响应头中
-                context.Response.Headers.Add("Authorization",token);
+                context.Response.Headers.Add("Authorization", "-1");
                 //暴露前端自定义头部字段
                 context.Response.Headers.Add("Access-Control-Expose-Headers", "Authorization");
             }
@@ -100,10 +98,12 @@ else
 //解释:builder.Host.UseServiceProviderFactory()
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>(builder =>
 {
-    //解释:
+    //解释:builder.RegisterAssemblyTypes() 这个方法是用来注册程序集中的类的
     builder.RegisterModule(new AutofacModuleRegister());
 });
 
+//autoMapper 自动映射
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 

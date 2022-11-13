@@ -9,19 +9,19 @@ namespace Training.Domain.Shard
     /// <summary>
     /// 统一返回结果
     /// </summary>
-    public class Result
+    public class Result<T>
     {
         /// <summary>
         /// 状态码
         /// </summary>
-        public stateEnum    Code { get; set; }
+        public stateEnum    code { get; set; }
         /// <summary>
         /// 返回消息
         /// </summary>
-        public string       Message { get; set; }
+        public string       message { get; set; }
         /// <summary>
         /// 返回数据
         /// </summary>
-        public object       Data { get; set; }
+        public T       data { get; set; }
     }
 }
