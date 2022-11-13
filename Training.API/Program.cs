@@ -14,6 +14,7 @@ using Training.Domain.Entity;
 using Training.Domain.Shard;
 using Training.API;
 using Newtonsoft.Json.Linq;
+using Training.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddAutofac(new AutofacServiceProviderFactory());
@@ -100,10 +101,12 @@ else
 //解释:builder.Host.UseServiceProviderFactory()
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>(builder =>
 {
-    //解释:
+    //解释:builder.RegisterAssemblyTypes() 这个方法是用来注册程序集中的类的
     builder.RegisterModule(new AutofacModuleRegister());
 });
 
+//autoMapper 自动映射
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 

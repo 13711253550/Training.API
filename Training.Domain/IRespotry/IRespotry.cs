@@ -6,7 +6,7 @@
         void Del(T obj);
         T Find(object id);
         IQueryable<T> GetList();
-        int Save(T obj);
+        int Save();
         void Upt(T obj);
     }
 }

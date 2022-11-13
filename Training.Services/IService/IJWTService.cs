@@ -1,11 +1,11 @@
-﻿using Training.Domain.Entity;
+﻿using Training.Domain.Shard;
 
-namespace Training.Services.Service
+namespace Training.Services.IService
 {
     public interface IJWTService
     {
-        int GetUserName(string Token);
-        object Login(string account, string password);
         string GetToken(string token);
+        int GetUserName(string Token);
+        Result<string> Login(string account, string password);
     }
 }

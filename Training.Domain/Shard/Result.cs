@@ -9,7 +9,7 @@ namespace Training.Domain.Shard
     /// <summary>
     /// 统一返回结果
     /// </summary>
-    public class Result
+    public class Result<T>
     {
         /// <summary>
         /// 状态码
@@ -22,6 +22,6 @@ namespace Training.Domain.Shard
         /// <summary>
         /// 返回数据
         /// </summary>
-        public object       Data { get; set; }
+        public T       Data { get; set; }
     }
 }

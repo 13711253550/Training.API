@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Training.Domain.Entity;
+using Training.Services.IService;
 using Training.Services.Service;
 
 namespace Training.API.Controllers

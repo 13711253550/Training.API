@@ -45,7 +45,7 @@ namespace Training.EFCore
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public int Save(T obj)
+        public int Save()
         {
             return sqlContext.SaveChanges();
         }
