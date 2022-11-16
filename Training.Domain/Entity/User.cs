@@ -20,5 +20,17 @@ namespace Training.Domain.Entity
         /// 密码
         /// </summary>
         public string password { get; set; }
+        /// <summary>
+        /// 用户名
+        /// </summary>
+        public string name { get; set; }
+        /// <summary>
+        /// 收货地址
+        /// </summary>
+        public string? address { get; set; }
+        /// <summary>
+        /// 手机号
+        /// </summary>
+        public string? phone { get; set; }
     }
 }

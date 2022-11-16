@@ -22,5 +22,6 @@ namespace Training.EFCore.Context
         public DbSet<Drug_Type> Drug_Type { get; set; }
         public DbSet<Logistics> Logistics { get; set; }
         public DbSet<Orderdetail> Orderdetail { get; set; }
+        public DbSet<CS> CS { get; set; }
     }
 }

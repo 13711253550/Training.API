@@ -8,21 +8,11 @@ namespace Training.Domain.DTO
 {
     public class Orderdetail_DTO
     {
-        /// <summary>
-        /// 药品分类名称
-        /// </summary>
-        public int Drug_Type_Name { get; set; }
-        /// <summary>
-        /// 药品分类图片
-        /// </summary>
-        public string Drug_Type_Image { get; set; }
-        /// <summary>
-        /// 药品分类是否上架
-        /// </summary>
-        public bool Drug_Type_IsShelves { get; set; }
-        /// <summary>
-        /// 药品类型库存
-        /// </summary>
-        public int Drug_Type_Stock { get; set; }
+        public int User_Id { get; set; }
+        public int Drug_Id { get; set; }
+        public DateTime order_time { get; set; }
+        public int order_status { get; set; }
+        public decimal payable_amount { get; set; }
+
     }
 }

@@ -4,5 +4,103 @@
         <name>Training.API</name>
     </assembly>
     <members>
+        <member name="T:Training.API.Controllers.DrugController">
+            <summary>
+            药品管理
+            </summary>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.GetDrug">
+            <summary>
+            显示所有药品
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.GetDrug_Type">
+            <summary>
+            显示所有药品分类
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.GetLogistics">
+            <summary>
+            显示所有公司
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.GetOrderdetailList">
+            <summary>
+            显示商品详情表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.GetSmallList">
+            <summary>
+            显示订单表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.AddDrug(Training.Domain.Entity.Drug_Management.Drug)">
+            <summary>
+            添加药品数据
+            </summary>
+            <param name="drug"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.AddDrug_Order(Training.Domain.DTO.ViewOrderdetail)">
+            <summary>
+            添加订单详情表数据
+            </summary>
+            <param name="drug_Order"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.DelDrug(System.Int32)">
+            <summary>
+            删除药品列表数据
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.DelDrug_Type(System.Int32)">
+            <summary>
+            删除药品分类表数据
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.DelLogistics(System.Int32)">
+            <summary>
+            删除药品公司数据
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.UpdDrug(Training.Domain.Entity.Drug_Management.Drug)">
+            <summary>
+            修改药品数据
+            </summary>
+            <param name="drug"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.UpdDrug_Order(Training.Domain.Entity.Drug_Management.Orderdetail)">
+            <summary>
+            修改商品详情表
+            </summary>
+            <param name="drug_Order"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.UpdDrug_Type(Training.Domain.Entity.Drug_Management.Drug_Type)">
+            <summary>
+            修改商品类型表
+            </summary>
+            <param name="drug_Type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.DrugController.UploadFile(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            文件上传
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

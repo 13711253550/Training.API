@@ -11,9 +11,8 @@ namespace Training.Domain.Entity.Drug_Management
     /// </summary>
     public class Orderdetail : Base
     {
-
         /// <summary>
-        /// 自动生成随机不重复16位订单号
+        /// 订单编号
         /// </summary>
         public string payment_number { get; set; } = Guid.NewGuid().ToString("N").Substring(0, 16);
         /// <summary>
@@ -25,56 +24,30 @@ namespace Training.Domain.Entity.Drug_Management
         /// </summary>
         public string payment_code { get; set; } = Guid.NewGuid().ToString("N").Substring(0, 16);
         /// <summary>
-        /// 收货人
-        /// </summary>
-        public string consignee { get; set; }
-        /// <summary>
-        /// 收货人电话
-        /// </summary>
-        public string consignee_phone { get; set; }
-        /// <summary>
-        /// 收货地址
-        /// </summary>
-        public string consignee_address { get; set; }
-        /// <summary>
         /// 物流公司
-        /// </summary>
+        /// </summary>1
         public int logistics_company { get; set; }
         /// <summary>
         /// 物流单号
         /// </summary>
-        public string logistics_number { get; set; }
+        public string? logistics_number { get; set; } = "";
         /// <summary>
         /// 配送费用
         /// </summary>
         public decimal delivery_fee { get; set; }
         /// <summary>
-        /// 药品图片
-        /// </summary>
-        public string drug_image { get; set; }
-        /// <summary>
-        /// 药品介绍
-        /// </summary>
-        public string drug_introduction { get; set; }
-        /// <summary>
         /// 药品数量
         /// </summary>
         public int drug_number { get; set; }
         /// <summary>
-        /// 药品规格
-        /// </summary>
-        public string drug_specification { get; set; }
-        /// <summary>
-        /// 应付金额
-        /// </summary>
-        public decimal payable_amount { get; set; }
-        /// <summary>
-        /// 实付金额
-        /// </summary>
-        public decimal actual_amount { get; set; }
-        /// <summary>
         /// 发货单备注
         /// </summary>
         public string remarks { get; set; }
+        /// <summary>
+        /// 订单状态
+        /// </summary>
+        public int order_status { get; set; }
+        public User User { get; set; }
+        public Drug Drug { get; set; }
     }
 }

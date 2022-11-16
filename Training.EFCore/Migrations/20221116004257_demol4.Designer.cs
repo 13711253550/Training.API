@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Training.EFCore.Context;
 
@@ -10,32 +11,15 @@ using Training.EFCore.Context;
 namespace Training.EFCore.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20221116004257_demol4")]
+    partial class demol4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("Training.Domain.Entity.CS", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Pid")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CS");
-                });
 
             modelBuilder.Entity("Training.Domain.Entity.Drug_Management.Drug", b =>
                 {
@@ -92,11 +76,10 @@ namespace Training.EFCore.Migrations
                     b.Property<bool>("Drug_Type_IsShelves")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Drug_Type_Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("Drug_Type_Name")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("Drug_Type_Stock")
+                    b.Property<int>("Drug_Type_Stock")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -125,22 +108,47 @@ namespace Training.EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("DrugId")
+                    b.Property<int>("User_Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("actual_amount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("consignee")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("consignee_address")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("consignee_phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<decimal>("delivery_fee")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<string>("drug_image")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("drug_introduction")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("drug_number")
                         .HasColumnType("int");
+
+                    b.Property<string>("drug_specification")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("logistics_company")
                         .HasColumnType("int");
 
                     b.Property<string>("logistics_number")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("order_status")
@@ -148,6 +156,9 @@ namespace Training.EFCore.Migrations
 
                     b.Property<DateTime>("order_time")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("payable_amount")
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("payment_code")
                         .IsRequired()
@@ -163,10 +174,6 @@ namespace Training.EFCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DrugId");
-
-                    b.HasIndex("UserId");
-
                     b.ToTable("Orderdetail");
                 });
 
@@ -180,42 +187,13 @@ namespace Training.EFCore.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("address")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("password")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("phone")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("Training.Domain.Entity.Drug_Management.Orderdetail", b =>
-                {
-                    b.HasOne("Training.Domain.Entity.Drug_Management.Drug", "Drug")
-                        .WithMany()
-                        .HasForeignKey("DrugId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Training.Domain.Entity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Drug");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

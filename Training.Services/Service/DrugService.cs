@@ -5,27 +5,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Training.Domain.DTO;
+using Training.Domain.Entity;
 using Training.Domain.Entity.Drug_Management;
 using Training.Domain.Shard;
 using Training.EFCore;
+using Training.Services.IService;
 
 namespace Training.Services.Service
 {
-    public class DrugService
+    public class DrugService : IDrugService
     {
         IMapper _mapper;
         public IRespotry<Drug> Drug;
+        public IRespotry<User> User;
         public IRespotry<Drug_Type> Drug_Type;
         public IRespotry<Logistics> Logistics;
         public IRespotry<Orderdetail> Drug_Order;
 
-        public DrugService(IRespotry<Drug> Drug, IRespotry<Drug_Type> Drug_Type, IRespotry<Logistics> Logistics, IRespotry<Orderdetail> Orderdetail, IMapper mapper)
+        public DrugService(IRespotry<Drug> Drug, IRespotry<Drug_Type> Drug_Type, IRespotry<Logistics> Logistics, IRespotry<Orderdetail> Orderdetail, IMapper mapper , IRespotry<User> User)
         {
             this.Drug = Drug;
             this.Drug_Type = Drug_Type;
             this.Logistics = Logistics;
             this.Drug_Order = Orderdetail;
             _mapper = mapper;
+            this.User = User;
         }
         #region 药品管理
         /// <summary>
@@ -59,7 +63,7 @@ namespace Training.Services.Service
         /// 药品显示
         /// </summary>
         /// <returns></returns>
-        public Result<List<DrugView>> ShowDrug()
+        public Result<List<DrugView>> GetListDrug()
         {
             var lst = from Drug in Drug.GetList()
                       join Drug_Type in Drug_Type.GetList()
@@ -168,18 +172,18 @@ namespace Training.Services.Service
         /// 药品类型显示
         /// </summary>
         /// <returns></returns>
-        public Result<List<Drug_Type>> ShowDrug_Type()
+        public Result<List<Drug_TypeDTO>> GetListDrug_Type()
         {
             var lst = Drug_Type.GetList().ToList();
-            var DrugShowList = lst.Select(x => new Drug_Type
+            var DrugShowList = lst.Select(x => new Drug_TypeDTO
             {
                 Drug_Type_Name = x.Drug_Type_Name,
                 Drug_Type_Image = x.Drug_Type_Image,
-                Id = x.Id,
-                Drug_Type_IsShelves = x.Drug_Type_IsShelves,
-                Drug_Type_Stock = Drug.GetList().ToList().Where(m => m.Drug_Type == x.Id).Count()
+                Drug_Type_IsShelves = x.Drug_Type_IsShelves==true?"是":"否",
+                //商品类型库存 = 对应商品类型的所有库存总和
+                Drug_Type_Stock = Drug.GetList().Where(y => y.Drug_Type == x.Id).Sum(y => y.Drug_Stock)
             }).ToList();
-            return new Result<List<Drug_Type>>()
+            return new Result<List<Drug_TypeDTO>>()
             {
                 code = stateEnum.Success,
                 message = "查询成功",
@@ -248,8 +252,20 @@ namespace Training.Services.Service
         /// </summary>
         /// <param name="drug_Order"></param>
         /// <returns></returns>
-        public Result<object> AddDrug_Order(Orderdetail drug_Order)
+        public Result<object> AddDrug_Order(ViewOrderdetail viewOrderdetail)
         {
+            Orderdetail drug_Order = new Orderdetail()
+            {
+                drug_number = viewOrderdetail.drug_number,
+                delivery_fee = viewOrderdetail.delivery_fee,
+                logistics_company = viewOrderdetail.logistics_company,
+                order_status = viewOrderdetail.order_status,
+                order_time = viewOrderdetail.order_time,
+                remarks = viewOrderdetail.remarks,
+                Drug = Drug.GetList().Where(x => x.Id == viewOrderdetail.DId).FirstOrDefault(),
+                User = User.GetList().Where(x => x.Id == viewOrderdetail.UId).FirstOrDefault()
+            };
+
             Drug_Order.Add(drug_Order);
             int n = Drug_Order.Save();
             if (n > 0)
@@ -300,7 +316,7 @@ namespace Training.Services.Service
         /// 订单详情显示
         /// </summary>
         /// <returns></returns>
-        public Result<List<Orderdetail>> GetLogisticsList()
+        public Result<List<Orderdetail>> GetOrderdetailList()
         {
             var lst = Drug_Order.GetList().ToList();
             return new Result<List<Orderdetail>>()
@@ -311,12 +327,98 @@ namespace Training.Services.Service
             };
         }
 
-        //订单显示
-        //public Result<Orderdetail_DTO> GetSmallList()
-        //{
+        /// <summary>
+        /// 订单显示
+        /// </summary>
+        /// <returns></returns>
+        public Result<List<Orderdetail_DTO>> GetSmallList()
+        {
+            var lst = Drug_Order.GetList().Select(x => new Orderdetail_DTO
+            {
+                order_status = x.order_status,
+                order_time = x.order_time,
+                payable_amount = x.Drug.Drug_Price * x.drug_number,
+                User_Id = x.User.Id,
 
-        //}
+            }).ToList();
+            return new Result<List<Orderdetail_DTO>>()
+            {
+                code = stateEnum.Success,
+                data = lst,
+                message = "查询成功"
+            };
+        }
+        #endregion
 
+        #region 物流公司管理
+
+        /// <summary>
+        /// 添加公司
+        /// </summary>
+        /// <param name="logistics"></param>
+        /// <returns></returns>
+        public Result<object> AddLogistics(Logistics logistics)
+        {
+            Logistics.Add(logistics);
+            int n = Logistics.Save();
+            if (n > 0)
+            {
+                return new Result<object>()
+                {
+                    code = stateEnum.Success,
+                    message = "添加成功"
+                };
+            }
+            else
+            {
+                return new Result<object>()
+                {
+                    code = stateEnum.Error,
+                    message = "添加失败"
+                };
+            }
+        }
+
+        /// <summary>
+        /// 删除公司
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Result<int> DelLogistics(int Id)
+        {
+            Logistics.Del(Logistics.Find(Id));
+            if (Logistics.Save() > 0)
+            {
+                return new Result<int>()
+                {
+                    code = stateEnum.Success,
+                    message = "删除成功"
+                };
+            }
+            else
+            {
+                return new Result<int>()
+                {
+                    code = stateEnum.Error,
+                    message = "删除失败"
+                };
+            }
+        }
+
+        /// <summary>
+        /// 显示公司
+        /// </summary>
+        /// <returns></returns>
+        public Result<List<Logistics>> GetLogistics()
+        {
+            var lst = Logistics.GetList().ToList();
+            return new Result<List<Logistics>>()
+            {
+                code = stateEnum.Success,
+                data = lst,
+                message = "查询成功"
+            };
+        }
 
         #endregion
     }
