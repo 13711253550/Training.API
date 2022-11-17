@@ -14,11 +14,9 @@ namespace Training.API.Controllers
     public class ValuesController : ControllerBase
     {
         public IJWTService m;
-        public ICSService n;
-        public ValuesController(IJWTService m,ICSService n)
+        public ValuesController(IJWTService m)
         {
             this.m = m;
-            this.n = n;
         }
 
         [HttpPost]
@@ -72,12 +70,6 @@ namespace Training.API.Controllers
                 message = "成功",
                 data = m.GetToken(token)
             });
-        }
-
-        [HttpGet]
-        public IActionResult CsShow()
-        {
-            return Ok(n.GetTree());  
         }
     }
 }

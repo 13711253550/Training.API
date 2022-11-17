@@ -15,7 +15,7 @@ namespace Training.Services
         {
             //          数据模型  视图模型
             //CreateMap<Movies, MoviesViewModel>().ReverseMap(); // 例子
-            CreateMap<Drug, DrugView>().ReverseMap();
+            CreateMap<Drug, DrugDTO>().ReverseMap();
         }
     }
 }

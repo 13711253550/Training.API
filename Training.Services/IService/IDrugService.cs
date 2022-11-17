@@ -16,7 +16,7 @@ namespace Training.Services.IService
         Result<List<Logistics>> GetLogistics();
         Result<List<Orderdetail>> GetOrderdetailList();
         Result<List<Orderdetail_DTO>> GetSmallList();
-        Result<List<DrugView>> GetListDrug();
+        Result<List<DrugDTO>> GetListDrug();
         Result<List<Drug_TypeDTO>> GetListDrug_Type();
         Result<int> UpdDrug(Drug drug);
         Result<int> UpdDrug_Order(Orderdetail drug_Order);

@@ -63,20 +63,20 @@ namespace Training.Services.Service
         /// 药品显示
         /// </summary>
         /// <returns></returns>
-        public Result<List<DrugView>> GetListDrug()
+        public Result<List<DrugDTO>> GetListDrug()
         {
             var lst = from Drug in Drug.GetList()
                       join Drug_Type in Drug_Type.GetList()
                       on Drug.Drug_Type equals Drug_Type.Id
-                      select new DrugView()
+                      select new DrugDTO()
                       {
                           Drug_Code = Drug.Drug_Code,
                           Drug_Name = Drug.Drug_Name,
                           Drug_Image = Drug.Drug_Image,
                           Drug_Price = Drug.Drug_Price,
-                          Drug_IsShelves = Drug.Drug_IsShelves,
+                          Drug_IsShelves = Drug.Drug_IsShelves == true ? "是":"否",
                       };
-            return new Result<List<DrugView>>()
+            return new Result<List<DrugDTO>>()
             {
                 code = stateEnum.Success,
                 message = "查询成功",
@@ -178,6 +178,7 @@ namespace Training.Services.Service
             var DrugShowList = lst.Select(x => new Drug_TypeDTO
             {
                 Drug_Type_Name = x.Drug_Type_Name,
+                Id = x.Id,
                 Drug_Type_Image = x.Drug_Type_Image,
                 Drug_Type_IsShelves = x.Drug_Type_IsShelves==true?"是":"否",
                 //商品类型库存 = 对应商品类型的所有库存总和

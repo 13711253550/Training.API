@@ -16,6 +16,8 @@ using Training.API;
 using Newtonsoft.Json.Linq;
 using Training.Services;
 using Training.Services.IService;
+using Autofac.Core;
+using Training.Domain.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddAutofac(new AutofacServiceProviderFactory());
@@ -93,6 +95,9 @@ else
     //这个类是用来配置MySql的版本的
     builder.Services.AddDbContext<SqlContext>(x => x.UseMySql(builder.Configuration.GetConnectionString("MySql"), new MySqlServerVersion(new Version(8, 0, 22))));
 }
+//使用SignalR
+builder.Services.AddSignalR();
+
 
 //AutoFac自动注册
 //解释:builder.Host.UseServiceProviderFactory()
@@ -118,7 +123,13 @@ app.UseSwaggerUI(s =>
     s.RoutePrefix = "";//请求swagger路径\
 });
 app.UseCors("kuayu");
-//}
+
+//SignlR
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<SignaIRChat>("/chatHub");
+});
+
 //注意：app.UseAuthentication() 必须在 app.UseAuthorization() 之前调用
 app.UseAuthentication();
 

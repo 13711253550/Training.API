@@ -9,6 +9,10 @@ namespace Training.Domain.DTO
     public class Drug_TypeDTO
     {
         /// <summary>
+        /// 类型Id
+        /// </summary>
+        public int Id { get; set; }
+        /// <summary>
         /// 药品分类名称
         /// </summary>
         public string Drug_Type_Name { get; set; }

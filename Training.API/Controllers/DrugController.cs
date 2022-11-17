@@ -52,7 +52,7 @@ namespace Training.API.Controllers
         {
             return Ok(drugService.GetLogistics());
         }
-        
+
         /// <summary>
         /// 显示商品详情表
         /// </summary>
@@ -82,7 +82,7 @@ namespace Training.API.Controllers
         /// <param name="drug"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult AddDrug(Drug drug) 
+        public IActionResult AddDrug(Drug drug)
         {
             return Ok(drugService.AddDrug(drug));
         }
@@ -148,7 +148,7 @@ namespace Training.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult DelLogistics(int id) 
+        public IActionResult DelLogistics(int id)
         {
             return Ok(drugService.DelLogistics(id));
         }
@@ -161,7 +161,7 @@ namespace Training.API.Controllers
         /// <param name="drug"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult UpdDrug(Drug drug) 
+        public IActionResult UpdDrug(Drug drug)
         {
             return Ok(drugService.UpdDrug(drug));
         }
@@ -171,7 +171,7 @@ namespace Training.API.Controllers
         /// <param name="drug_Order"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult UpdDrug_Order(Orderdetail drug_Order) 
+        public IActionResult UpdDrug_Order(Orderdetail drug_Order)
         {
             return Ok(drugService.UpdDrug_Order(drug_Order));
         }
