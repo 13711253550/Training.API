@@ -35,26 +35,42 @@ namespace Training.Services.Service
             await Clients.Client(connId).SendAsync("ReceiveMessage", user, message);
         }
 
+        //传输图片
+        public async Task SendImgToCaller(string user, string Foruser, string Img)
+        {
+            var lst = Context.ConnectionId;
+            string connId = GetId(Foruser);
+            //给指定用户发消息
+            await Clients.Client(connId).SendAsync("ReceiveImg", user, Img);
+        }
+
+        //根据键获取值
         public string GetId(string chatterName)
         {
-            //解释：
+            //解释：根据键获取值
             return _sockets.FirstOrDefault(x => x.Key.Equals(chatterName)).Value;
         }
 
+        //绑定的字典
         public string ListBindUser(string UserName)
         {
             try
             {
-                //解释这段代码的意思是：如果当前用户已经登录了，那么就把当前用户的连接ID和用户名存到字典里面。
                 bool AddJudge = true;
-                int port = _sockets.Count;//长度
                 List<string> a = new List<string>();
+                
+                
                 AddJudge = _sockets.TryAdd(UserName, Context.ConnectionId);//添加进入用户
+                if (!(GetId(UserName)==null))
+                {
+                    //对_sockets数据字典进行更新
+                   AddJudge = _sockets.TryUpdate(UserName, Context.ConnectionId, GetId(UserName));
+                }
+
                 if (!dialogues.ContainsKey("List"))//查找聊天键,里面放着的是处于聊天页面的用户
                 {
                     dialogues.TryAdd("List", a);
                 }
-
                 dialogues["List"].Add(UserName);//加入列表页面用户组
 
                 if (AddJudge == true)//判断用户是否绑定成功!
@@ -72,6 +88,7 @@ namespace Training.Services.Service
             }
         }
 
+        //解绑用户
         public String ListUnBindUser(string UserName)
         {
             try
@@ -95,15 +112,6 @@ namespace Training.Services.Service
         public string GetConnectionId(string UserName)
         {
             return _sockets.FirstOrDefault(x => x.Key.Equals(UserName)).Value;
-        }
-
-        //用户传输图片实现聊天实现原理 传输图片 传输文件 传输视频 传输音频  传输文字 传输表情
-        public async Task SendImgToCaller(string user, string Foruser, string Img)
-        {
-            var lst = Context.ConnectionId;
-            string connId = GetId(Foruser);
-            //给指定用户发消息
-            await Clients.Client(connId).SendAsync("ReceiveImg", user, Img);
         }
     }
 }
