@@ -32,5 +32,9 @@ namespace Training.Domain.Entity
         /// 手机号
         /// </summary>
         public string? phone { get; set; }
+        /// <summary>
+        /// 用户性别
+        /// </summary>
+        public int UserSex  { get; set; }
     }
 }

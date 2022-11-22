@@ -133,12 +133,14 @@ namespace Training.Services.Service
         /// <returns></returns>
         public string GetToken(string token)
         {
+            //解释:由于时间经过特殊格式，所有要进行转换
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
-            //反编译token
+            //如果Token为空，返回空
             if (token == null || token == "0")
             {
                 return "0";
             }
+            //反编译token
             var jwt = new JwtSecurityToken(token);
 
             //payload:获取到当前token的负载
@@ -146,8 +148,10 @@ namespace Training.Services.Service
             var exp = jwt.Payload["exp"].ToString();
             //格式转换exp
             var expTime = startTime.AddSeconds(long.Parse(exp));
+            //当验证Token到期
             if (expTime < DateTime.Now)
             {
+                //从数据库中获取刷新Token
                 CSRedisClient redis = new CSRedisClient("127.0.0.1:6379");
                 RedisHelper.Initialization(redis);
                 var uid = jwt.Payload["Uid"].ToString();
@@ -155,8 +159,10 @@ namespace Training.Services.Service
                 var jwt2 = new JwtSecurityToken(jwtNow.renovation_JWT);
                 var renovation_exp = jwt2.Payload["exp"].ToString();
                 var renovation_expTime = startTime.AddSeconds(long.Parse(renovation_exp));
+                //判断数据库里的Token和传参是否一致，且刷新Token是否过期
                 if (renovation_expTime > DateTime.Now && token == jwtNow.verification_JWT)
                 {
+                    //进行刷新Token
                     User user = new User()
                     {
                         Id = Convert.ToInt32(jwt.Payload["Uid"]),
@@ -165,6 +171,7 @@ namespace Training.Services.Service
                     JWT newjwt = new JWT();
                     newjwt.verification_JWT = GetNewJWT(user, 1);
                     newjwt.renovation_JWT = GetNewJWT(user, 300);
+                    //放入Redis
                     redis.Set(uid.ToString(), newjwt);
                     return newjwt.verification_JWT;
                 }

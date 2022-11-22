@@ -14,9 +14,18 @@ namespace Training.API.Controllers
     public class ValuesController : ControllerBase
     {
         public IJWTService m;
-        public ValuesController(IJWTService m)
+        public IUserService n;
+        public ValuesController(IJWTService m, IUserService n)
         {
             this.m = m;
+            this.n = n;
+        }
+
+
+        [HttpGet]
+        public IActionResult GetUser()
+        {
+            return Ok(n.GetUser());
         }
 
         [HttpPost]

@@ -216,18 +216,29 @@ namespace Training.API.Controllers
             }
             //获取文件路径
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", fileName);
-            //判断文件是否存在
-            if (System.IO.File.Exists(filePath))
-            {
-                return Ok(new Result<string>() { code = stateEnum.Error, message = "文件已经存在" });
-            }
+            ////判断文件是否存在
+            //if (System.IO.File.Exists(filePath))
+            //{
+            //    return Ok(new Result<string>() { code = stateEnum.Error, message = "文件已经存在" });
+            //}
             //创建文件
             using (var stream = System.IO.File.Create(filePath))
             {
                 file.CopyTo(stream);
             }
-            return Ok("/img/" + fileName);
+            return Ok(new
+            {
+                ImgName = "/img/" + fileName,
+                ImgBase64 = Convert.ToBase64String(System.IO.File.ReadAllBytes(filePath))
+            });
         }
+
+        //测试
+        //[HttpGet]
+        //public IActionResult Test()
+        //{
+        //    return Ok(drugService.GetListSql());
+        //}
 
     }
 }

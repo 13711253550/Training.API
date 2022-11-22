@@ -1,4 +1,5 @@
 ﻿using Training.Domain.DTO;
+using Training.Domain.Entity;
 using Training.Domain.Entity.Drug_Management;
 using Training.Domain.Shard;
 
@@ -21,5 +22,6 @@ namespace Training.Services.IService
         Result<int> UpdDrug(Drug drug);
         Result<int> UpdDrug_Order(Orderdetail drug_Order);
         Result<int> UpdDrug_Type(Drug_Type drug_Type);
+
     }
 }

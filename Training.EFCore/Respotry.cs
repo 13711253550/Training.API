@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,6 +67,5 @@ namespace Training.EFCore
         {
             return sqlContext.Set<T>().Find(id);
         }
-        
     }
 }
