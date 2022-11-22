@@ -7,6 +7,6 @@ namespace Training.Services.IService
     {
         string GetToken(string token);
         int GetUserName(string Token);
-        Result<string> Login(LoginDTO login);
+        Result<object> Login(LoginDTO login);
     }
 }

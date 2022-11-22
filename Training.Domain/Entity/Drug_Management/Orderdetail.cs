@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Training.Domain.Entity.UserEntity.User;
 
 namespace Training.Domain.Entity.Drug_Management
 {

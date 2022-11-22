@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Training.Domain.Entity
+namespace Training.Domain.Entity.UserEntity.User
 {
-    public class User:Base
+    public class User : Base
     {
         /// <summary>
         /// 账号
         /// </summary>
         [Required]
-        public string account  { get; set; }
+        public string account { get; set; }
         [Required]
         /// <summary>
         /// 密码
@@ -35,6 +35,6 @@ namespace Training.Domain.Entity
         /// <summary>
         /// 用户性别
         /// </summary>
-        public int UserSex  { get; set; }
+        public int UserSex { get; set; }
     }
 }

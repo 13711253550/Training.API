@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Training.Domain.Entity;
 using Training.Domain.Entity.Drug_Management;
+using Training.Domain.Entity.UserEntity;
+using Training.Domain.Entity.UserEntity.User;
 
 namespace Training.EFCore.Context
 {
@@ -22,6 +23,7 @@ namespace Training.EFCore.Context
         public DbSet<Drug_Type> Drug_Type { get; set; }
         public DbSet<Logistics> Logistics { get; set; }
         public DbSet<Orderdetail> Orderdetail { get; set; }
-        public DbSet<CS> CS { get; set; }
+        public DbSet<RoleInfo> RoleInfo { get; set; }
+        public DbSet<UserRole> UserRole { get; set; }
     }
 }

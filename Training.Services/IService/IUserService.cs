@@ -1,4 +1,4 @@
-﻿using Training.Domain.Entity;
+﻿using Training.Domain.Entity.UserEntity.User;
 using Training.Domain.Shard;
 
 namespace Training.Services.IService

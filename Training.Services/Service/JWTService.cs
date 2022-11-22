@@ -12,8 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using Training.Domain.DTO;
-using Training.Domain.Entity;
 using Training.Domain.Entity.JWT;
+using Training.Domain.Entity.UserEntity.User;
 using Training.Domain.Shard;
 using Training.EFCore;
 using Training.Services.IService;
@@ -36,7 +36,7 @@ namespace Training.Services.Service
         /// <param name="account"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public Result<string> Login(LoginDTO login)
+        public Result<object> Login(LoginDTO login)
         {
             //查询用户
             var user = User.GetList().Where(x => x.account == login.account && x.password == login.password).FirstOrDefault();
@@ -53,11 +53,15 @@ namespace Training.Services.Service
 
 
             var Res = AddRedis(jwt, user.Id);
-            return new Result<string>()
+            return new Result<object>()
             {
                 code = stateEnum.Success,
                 message = "登录成功",
-                data = jwt.verification_JWT
+                data = new
+                {
+                    JWT = jwt.verification_JWT,
+                    Uid = user.Id
+                }
             };
         }
 
