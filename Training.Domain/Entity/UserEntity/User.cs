@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Training.Domain.Entity.UserEntity.User
 {
     public class User : Base
-    {
+    { 
         /// <summary>
         /// 账号
         /// </summary>
@@ -36,5 +36,9 @@ namespace Training.Domain.Entity.UserEntity.User
         /// 用户性别
         /// </summary>
         public int UserSex { get; set; }
+        /// <summary>
+        /// 用户年龄
+        /// </summary>
+        public int UserAge { get; set; }
     }
 }

@@ -36,7 +36,7 @@ namespace Training.Services.Service
         /// <param name="account"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public Result<object> Login(LoginDTO login)
+        public Result<object> Login(Login_DTO login)
         {
             //查询用户
             var user = User.GetList().Where(x => x.account == login.account && x.password == login.password).FirstOrDefault();
@@ -98,8 +98,8 @@ namespace Training.Services.Service
                 //解释ClaimsIdentity  这个类是用来描述用户的一些基本信息的，比如说，用户名，用户ID，用户邮箱等等
                 Subject = new ClaimsIdentity(new Claim[]
                  {
-                     new Claim(ClaimDTO.Uid, user.Id.ToString()),
-                     new Claim(ClaimDTO.Uname, user.account),
+                     new Claim(Claim_DTO.Uid, user.Id.ToString()),
+                     new Claim(Claim_DTO.Uname, user.account),
                  }),
                 //解释Expires 这个属性是用来设置Token的过期时间的
                 Expires = DateTime.Now.AddMinutes(Time),

@@ -5,10 +5,12 @@ using Training.Domain.DTO;
 using Training.Domain.Entity;
 using Training.Domain.Shard;
 using Training.Services.IService;
-using Training.Services.Service;
 
 namespace Training.API.Controllers
 {
+    /// <summary>
+    /// JWT管理
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class ValuesController : ControllerBase
@@ -21,19 +23,29 @@ namespace Training.API.Controllers
             this.n = n;
         }
 
-
+        /// <summary>
+        /// 获取所有用户
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetUser()
         {
             return Ok(n.GetUser());
         }
-
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
         [HttpPost]
-        public IActionResult Login(LoginDTO login)
+        public IActionResult Login(Login_DTO login)
         {
             return Ok(m.Login(login));
         }
-
+        /// <summary>
+        /// 用户角色返回
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetInfo()
         {
@@ -44,7 +56,10 @@ namespace Training.API.Controllers
                 message = "成功"
             });
         }
-
+        /// <summary>
+        /// 测试
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult test()
         {
@@ -55,7 +70,10 @@ namespace Training.API.Controllers
                 message = "成功"
             });
         }
-
+        /// <summary>
+        /// 测试
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpGet]
         public IActionResult Show()
@@ -67,7 +85,10 @@ namespace Training.API.Controllers
                 data = "成功"
             });
         }
-
+        /// <summary>
+        /// 获取新Token
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetNewToken()
         {

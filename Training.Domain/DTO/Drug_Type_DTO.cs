@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Training.Domain.DTO
 {
-    public class Drug_TypeDTO
+    public class Drug_Type_DTO
     {
         /// <summary>
         /// 类型Id

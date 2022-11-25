@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Training.Domain.DTO;
+using Training.Domain.Entity.UserEntity;
 using Training.Domain.Entity.UserEntity.User;
 using Training.Domain.Shard;
 using Training.EFCore;
@@ -10,7 +12,7 @@ using Training.Services.IService;
 
 namespace Training.Services.Service
 {
-    public class UserService : IUserService
+    public class UserService:IUserService
     {
         public IRespotry<User> User;
         public UserService(IRespotry<User> User)

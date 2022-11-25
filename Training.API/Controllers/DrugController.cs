@@ -196,31 +196,35 @@ namespace Training.API.Controllers
         [HttpPost]
         public IActionResult UploadFile(IFormFile file)
         {
+            string filePath = "";
             if (file == null)
             {
                 return Ok(new Result<string>() { code = stateEnum.Error, message = "上传失败" });
             }
             //获取文件名
-            string fileName = file.FileName;
+            string fileName = Guid.NewGuid().ToString()+file.FileName;
             //获取文件后缀
             string fileExt = Path.GetExtension(fileName);
-            //判断文件后缀
-            if (fileExt != ".jpg" && fileExt != ".png" && fileExt != ".gif")
-            {
-                return Ok(new Result<string>() { code = stateEnum.Error, message = "文件格式不正确" });
-            }
             //判断文件大小
-            if (file.Length > 1024 * 1024 * 5)
+            if (file.Length > 1024 * 1024 * 50)
             {
-                return Ok(new Result<string>() { code = stateEnum.Error, message = "文件大小不能超过5M" });
+                return Ok(new Result<string>() { code = stateEnum.Error, message = "文件大小不能超过50M" });
             }
-            //获取文件路径
-            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", fileName);
+            //判断文件后缀并获取路径
+            if (fileExt == ".mp3")
+            {
+                filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "mp3", fileName);
+            }
+            else
+            {                                                                                   
+                filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", fileName);
+            }
             ////判断文件是否存在
             //if (System.IO.File.Exists(filePath))
             //{
             //    return Ok(new Result<string>() { code = stateEnum.Error, message = "文件已经存在" });
             //}
+            
             //创建文件
             using (var stream = System.IO.File.Create(filePath))
             {
@@ -229,16 +233,10 @@ namespace Training.API.Controllers
             return Ok(new
             {
                 ImgName = "/img/" + fileName,
-                ImgBase64 = Convert.ToBase64String(System.IO.File.ReadAllBytes(filePath))
+                ImgBase64 = Convert.ToBase64String(System.IO.File.ReadAllBytes(filePath)),
+                mp3 = "http://localhost:5079/mp3/" + fileName,
+                code = 20000
             });
         }
-
-        //测试
-        //[HttpGet]
-        //public IActionResult Test()
-        //{
-        //    return Ok(drugService.GetListSql());
-        //}
-
     }
 }

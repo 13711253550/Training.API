@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Training.Domain.DTO
 {
-    public static class ClaimDTO
+    public class ViewAddClinical
     {
-        public static string  Uid   { get; set; } = "Uid";
-        public static string Uname { get; set; } = "Uname";
+        public int Uid { get; set; }
+        public string Label { get; set; }
     }
 }

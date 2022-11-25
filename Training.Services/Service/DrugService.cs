@@ -63,12 +63,12 @@ namespace Training.Services.Service
         /// 药品显示
         /// </summary>
         /// <returns></returns>
-        public Result<List<DrugDTO>> GetListDrug()
+        public Result<List<Drug_DTO>> GetListDrug()
         {
             var lst = from Drug in Drug.GetList()
                       join Drug_Type in Drug_Type.GetList()
                       on Drug.Drug_Type equals Drug_Type.Id
-                      select new DrugDTO()
+                      select new Drug_DTO()
                       {
                           Drug_Code = Drug.Drug_Code,
                           Drug_Name = Drug.Drug_Name,
@@ -76,7 +76,7 @@ namespace Training.Services.Service
                           Drug_Price = Drug.Drug_Price,
                           Drug_IsShelves = Drug.Drug_IsShelves == true ? "是":"否",
                       };
-            return new Result<List<DrugDTO>>()
+            return new Result<List<Drug_DTO>>()
             {
                 code = stateEnum.Success,
                 message = "查询成功",
@@ -172,10 +172,10 @@ namespace Training.Services.Service
         /// 药品类型显示
         /// </summary>
         /// <returns></returns>
-        public Result<List<Drug_TypeDTO>> GetListDrug_Type()
+        public Result<List<Drug_Type_DTO>> GetListDrug_Type()
         {
             var lst = Drug_Type.GetList().ToList();
-            var DrugShowList = lst.Select(x => new Drug_TypeDTO
+            var DrugShowList = lst.Select(x => new Drug_Type_DTO
             {
                 Drug_Type_Name = x.Drug_Type_Name,
                 Id = x.Id,
@@ -184,7 +184,7 @@ namespace Training.Services.Service
                 //商品类型库存 = 对应商品类型的所有库存总和
                 Drug_Type_Stock = Drug.GetList().Where(y => y.Drug_Type == x.Id).Sum(y => y.Drug_Stock)
             }).ToList();
-            return new Result<List<Drug_TypeDTO>>()
+            return new Result<List<Drug_Type_DTO>>()
             {
                 code = stateEnum.Success,
                 message = "查询成功",

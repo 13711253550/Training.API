@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Training.EFCore.Context;
 
@@ -10,9 +11,10 @@ using Training.EFCore.Context;
 namespace Training.EFCore.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20221123022047_demol14")]
+    partial class demol14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,9 +167,6 @@ namespace Training.EFCore.Migrations
                     b.Property<int>("Did")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
-
                     b.Property<string>("Time")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -175,24 +174,6 @@ namespace Training.EFCore.Migrations
                     b.Property<string>("UName")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("Uid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserAge")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserSex")
-                        .HasColumnType("int");
-
-                    b.Property<string>("address")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("phone")
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("state")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
@@ -206,14 +187,6 @@ namespace Training.EFCore.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("account")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("password")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -239,110 +212,6 @@ namespace Training.EFCore.Migrations
                     b.ToTable("Doctor_label");
                 });
 
-            modelBuilder.Entity("Training.Domain.Entity.UserEntity.DrugOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Drug_Id")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Drug_Number")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("drug_img")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("drug_name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<decimal>("drug_price")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<string>("inquiry_result_Id")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DrugOrder");
-                });
-
-            modelBuilder.Entity("Training.Domain.Entity.UserEntity.Inquiry_Prescription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Drug_Id")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Drug_Number")
-                        .HasColumnType("int");
-
-                    b.Property<string>("drug_img")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("drug_name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<decimal>("drug_price")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<string>("inquiry_result_Id")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Inquiry_Prescription");
-                });
-
-            modelBuilder.Entity("Training.Domain.Entity.UserEntity.Inquiry_Result", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Cid")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Drug_method")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("action_in_chief")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("inquiry_result_content")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("prescription_Id")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Inquiry_Result");
-                });
-
             modelBuilder.Entity("Training.Domain.Entity.UserEntity.Label", b =>
                 {
                     b.Property<int>("Id")
@@ -366,9 +235,6 @@ namespace Training.EFCore.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserAge")
                         .HasColumnType("int");
 
                     b.Property<int>("UserSex")
@@ -412,17 +278,6 @@ namespace Training.EFCore.Migrations
                         .IsRequired();
 
                     b.Navigation("Drug");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Training.Domain.Entity.UserEntity.DrugOrder", b =>
-                {
-                    b.HasOne("Training.Domain.Entity.UserEntity.User.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });

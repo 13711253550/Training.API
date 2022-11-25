@@ -23,7 +23,12 @@ namespace Training.EFCore.Context
         public DbSet<Drug_Type> Drug_Type { get; set; }
         public DbSet<Logistics> Logistics { get; set; }
         public DbSet<Orderdetail> Orderdetail { get; set; }
-        public DbSet<RoleInfo> RoleInfo { get; set; }
-        public DbSet<UserRole> UserRole { get; set; }
+        public DbSet<Doctor> Doctor { get; set; }
+        public DbSet<Label> Label { get; set; }
+        public DbSet<Clinical_Reception> Clinical_Reception { get; set; }
+        public DbSet<Doctor_label> Doctor_label { get; set; }
+        public DbSet<Inquiry_Prescription> Inquiry_Prescription { get; set; }
+        public DbSet<Inquiry_Result> Inquiry_Result { get; set; }
+        public DbSet<DrugOrder> DrugOrder { get; set; }
     }
 }

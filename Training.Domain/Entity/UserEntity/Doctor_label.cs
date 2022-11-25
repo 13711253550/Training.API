@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Training.Domain.Entity.UserEntity
 {
-    /// <summary>
-    /// 角色表
-    /// </summary>
-    public class RoleInfo : Base
+    public class Doctor_label:Base
     {
-        public string RoleName { get; set; }
+        public int Did { get; set; }
+        public int Lid { get; set; }
     }
 }

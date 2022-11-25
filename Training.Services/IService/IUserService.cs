@@ -1,4 +1,6 @@
-﻿using Training.Domain.Entity.UserEntity.User;
+﻿using Training.Domain.DTO;
+using Training.Domain.Entity.UserEntity;
+using Training.Domain.Entity.UserEntity.User;
 using Training.Domain.Shard;
 
 namespace Training.Services.IService

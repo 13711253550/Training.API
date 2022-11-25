@@ -102,5 +102,137 @@
             <param name="file"></param>
             <returns></returns>
         </member>
+        <member name="T:Training.API.Controllers.InquiryController">
+            <summary>
+            问诊接口
+            </summary>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.GetInquiryList(System.Int32)">
+            <summary>
+            获取问诊列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.GetDoctorList">
+            <summary>
+            获取医生列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.GetLabelList">
+            <summary>
+            获取所有标签
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.GetDoctorByLabel(Training.Domain.DTO.ViewAddClinical)">
+            <summary>
+            根据参数输入的标签获取医生
+            </summary>
+            <param name="label"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.DoctorLogin(Training.Domain.DTO.ViewDoctorLogin)">
+            <summary>
+            医生登录
+            </summary>
+            <param name="viewDoctorLogin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.DeleteClinical_Reception(System.Int32)">
+            <summary>
+            删除问诊
+            </summary>
+            <param name="Uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.AddPrescription(Training.Domain.DTO.ViewAddPrescription)">
+            <summary>
+            添加就诊药品
+            </summary>
+            <param name="viewAddPrescription"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.GetGuid">
+            <summary>
+            生成一个Guid
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.ShowDrug">
+            <summary>
+            显示添加药品
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.ShowPrescription(System.String)">
+            <summary>
+            显示药方
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.AddInquiry_Result(Training.Domain.DTO.ViewAddInquiry_Result)">
+            <summary>
+            添加问诊结果
+            </summary>
+            <param name="viewAddInquiry_Result"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.ShowInquiry_Result(System.Int32)">
+            <summary>
+            显示用户确诊单
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.InquiryController.AddOrder(System.Collections.Generic.List{Training.Domain.DTO.ViewDrug})">
+            <summary>
+            用户下单
+            </summary>
+            <param name="ViewDrug"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Training.API.Controllers.ValuesController">
+            <summary>
+            JWT管理
+            </summary>
+        </member>
+        <member name="M:Training.API.Controllers.ValuesController.GetUser">
+            <summary>
+            获取所有用户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.ValuesController.Login(Training.Domain.DTO.Login_DTO)">
+            <summary>
+            用户登录
+            </summary>
+            <param name="login"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.ValuesController.GetInfo">
+            <summary>
+            用户角色返回
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.ValuesController.test">
+            <summary>
+            测试
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.ValuesController.Show">
+            <summary>
+            测试
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.ValuesController.GetNewToken">
+            <summary>
+            获取新Token
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

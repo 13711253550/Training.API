@@ -19,8 +19,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Graph" Version="4.47.0" />
     <PackageReference Include="Snowflake.Core" Version="2.0.0" />
+    <PackageReference Include="TencentCloudSDK" Version="3.0.647" />
   </ItemGroup>
 
 </Project>
