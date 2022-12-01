@@ -192,6 +192,37 @@
             <param name="ViewDrug"></param>
             <returns></returns>
         </member>
+        <member name="T:Training.API.Controllers.PayController">
+            <summary>
+            支付宝支付接口
+            </summary>
+        </member>
+        <member name="M:Training.API.Controllers.PayController.Pay(System.Int32)">
+            <summary>
+            支付宝支付
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.PayController.UptState(System.Int32)">
+            <summary>
+            支付宝支付完成后 会跳转到同步通知地址
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Training.API.Controllers.PayController.SeckillPay(System.Int32)">
+            <summary>
+            秒杀订单支付
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Training.API.Controllers.SeckillsController">
+            <summary>
+            秒杀活动
+            </summary>
+        </member>
         <member name="T:Training.API.Controllers.ValuesController">
             <summary>
             JWT管理

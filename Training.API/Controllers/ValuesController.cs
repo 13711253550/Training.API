@@ -85,6 +85,7 @@ namespace Training.API.Controllers
                 data = "成功"
             });
         }
+
         /// <summary>
         /// 获取新Token
         /// </summary>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Training.Domain.Entity.Drug_Management;
+using Training.Domain.Entity.Seckill;
 using Training.Domain.Entity.UserEntity;
 using Training.Domain.Entity.UserEntity.User;
 
@@ -30,5 +31,8 @@ namespace Training.EFCore.Context
         public DbSet<Inquiry_Prescription> Inquiry_Prescription { get; set; }
         public DbSet<Inquiry_Result> Inquiry_Result { get; set; }
         public DbSet<DrugOrder> DrugOrder { get; set; }
+        public DbSet<goods> goods { get; set; }
+        public DbSet<seckill_Activity> seckill_Activity { get; set; }
+        public DbSet<Seckill_Goods> Seckill_Goods { get; set; }
     }
 }

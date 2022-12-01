@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Training.Domain.Entity.UserEntity;
 using Training.Services.IService;
 
 namespace Training.API.Controllers
@@ -14,7 +15,11 @@ namespace Training.API.Controllers
             this.UserService = UserService;
         }
 
-        
+        [HttpPost]
+        public IActionResult AddDoctor(Doctor doctor)
+        {
+            return Ok(UserService.AddDoctor(doctor));
+        }
 
     }
 }

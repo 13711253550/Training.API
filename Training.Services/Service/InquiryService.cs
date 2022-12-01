@@ -5,8 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using TencentCloud.Ame.V20190916.Models;
-using TencentCloud.Mrs.V20200910.Models;
 using Training.Domain.DTO;
 using Training.Domain.Entity.Drug_Management;
 using Training.Domain.Entity.UserEntity;
@@ -18,6 +16,8 @@ namespace Training.Services.Service
 {
     public class InquiryService : IInquiryService
     {
+        #region 依赖注入
+
         public IRespotry<Clinical_Reception> Clinical_Reception;
         public IRespotry<Doctor> Doctor;
         public IRespotry<Label> Label;
@@ -39,6 +39,9 @@ namespace Training.Services.Service
             this.Drug = Drug;
             this.DrugOrder = DrugOrder;
         }
+
+        #endregion
+
         /// <summary>
         /// 获取所有接诊信息
         /// </summary>
@@ -64,6 +67,7 @@ namespace Training.Services.Service
                 message = "查询完成"
             };
         }
+
         /// <summary>
         /// 获取所有医生信息
         /// </summary>
@@ -107,7 +111,7 @@ namespace Training.Services.Service
             //在医生集合中随机选取一个医生
             var random = new Random();
             var index = random.Next(0, doctor.Count);
-          
+
             if (Clinical_Reception.GetList().Where(x => x.Uid == viewAddClinical.Uid && x.state == false).Count() != 0)
             {
                 return null;
@@ -165,6 +169,7 @@ namespace Training.Services.Service
                 };
             }
         }
+
         /// <summary>
         /// 医生登录
         /// </summary>
@@ -470,8 +475,10 @@ namespace Training.Services.Service
             foreach (var item in DrugOrders.ToList())
             {
                 DrugOrder.Add(item);
+                var Stock = Drug.GetList().Where(x => x.Drug_Code == item.Drug_Id).FirstOrDefault();
+                Stock.Drug_Stock = Stock.Drug_Stock - item.Drug_Number;
+                Drug.Upt(Stock);
             }
-
 
             if (Drug.Save() > 0)
             {
@@ -495,6 +502,70 @@ namespace Training.Services.Service
 
             }
 
+        }
+
+        /// <summary>
+        /// 显示所有订单
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        public Result<object> GetDrugOrder(int uid)
+        {
+            var lst = from a in DrugOrder.GetList()
+                      join b in Inquiry_Result.GetList()
+                      on a.inquiry_result_Id equals b.prescription_Id
+                      join c in Clinical_Reception.GetList()
+                      on b.Cid equals c.Id
+                      where c.Uid == uid
+                      where a.OrderState == 0
+                      select new
+                      {
+                          a.Drug_Id,
+                          a.Drug_Number,
+                          a.drug_img,
+                          a.drug_name,
+                          a.drug_price,
+                          a.inquiry_result_Id,
+                          a.Id,
+                      };
+
+            return new Result<object>()
+            {
+                code = stateEnum.Success,
+                data = lst.ToList(),
+                message = "查询成功"
+            };
+        }
+
+        public ViewAddAlipayTrade GetInquiry(int id)
+        {
+            var lst = from a in DrugOrder.GetList()
+                      join b in Inquiry_Result.GetList()
+                      on a.inquiry_result_Id equals b.prescription_Id
+                      join c in Clinical_Reception.GetList()
+                      on b.Cid equals c.Id
+                      where a.Id == id
+                      where a.OrderState == 0
+                      select new ViewAddAlipayTrade
+                      {
+                          OutTradeNo = Guid.NewGuid().ToString() + a.Id,
+                          Subject = a.drug_name,
+                          //保留 a.drug_price两位小数
+                          TotalAmount = Math.Round(a.drug_price, 2),
+                      };
+            return lst.FirstOrDefault();
+        }
+        /// <summary>
+        /// 修改订单状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void UptState(int id)
+        {
+            var lst = DrugOrder.Find(id);
+            lst.OrderState = 1;
+            DrugOrder.Upt(lst);
+            DrugOrder.Save();
         }
     }
 }

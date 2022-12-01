@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TencentCloud.Ccc.V20200210.Models;
 using Training.Domain.Entity;
 using Training.Domain.Entity.UserEntity;
 using Training.EFCore;

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Training.EFCore.Context;
 
@@ -10,9 +11,10 @@ using Training.EFCore.Context;
 namespace Training.EFCore.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20221130005526_demol24")]
+    partial class demol24
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,9 +195,6 @@ namespace Training.EFCore.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("SeckillNumber")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("SeckillPrice")
                         .HasColumnType("decimal(65,30)");
 
@@ -327,8 +326,8 @@ namespace Training.EFCore.Migrations
                     b.Property<int>("Drug_Number")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderState")
-                        .HasColumnType("int");
+                    b.Property<bool>("OrderState")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

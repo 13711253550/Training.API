@@ -17,6 +17,13 @@ using Newtonsoft.Json.Linq;
 using Training.Services;
 using Training.Services.IService;
 using Autofac.Core;
+using Aop.Api;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using CSRedis;
+using Microsoft.Extensions.Configuration;
+using Training.Domain.Entity.Seckill;
+using Aop.Api.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddAutofac(new AutofacServiceProviderFactory());
@@ -61,6 +68,10 @@ builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSch
             //如果Token过期
             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
             {
+                //调用JWTService方法 刷新Token
+                // var jwtService = context.HttpContext.RequestServices.GetRequiredService<IJWTService>();
+                
+                //刷新Token
                 context.Response.Headers.Add("Authorization", "-1");
                 //暴露前端自定义头部字段
                 context.Response.Headers.Add("Access-Control-Expose-Headers", "Authorization");
@@ -84,7 +95,23 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddControllers().AddJsonOptions(p => p.JsonSerializerOptions.PropertyNamingPolicy = null);
 //builder.Services.AddCors((x) => { x.AddPolicy("kuayu", d => d.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());});
 
+builder.Services.AddHangfire(configura =>
+{
+    configura.UseStorage(new MemoryStorage());
+    //每隔30分钟执行一次
+    //调用SeckillService方法
+    RecurringJob.AddOrUpdate<SeckillService>(x => x.SetRedis(), "0 0/1 * * * ? ");
+});
 
+#region Redis
+////注册CSRedis服务
+//string strRedis = builder.Configuration["Redis:Host"];
+//var cs = new CSRedisClient(strRedis);//实例化CSRedis客户端
+//RedisHelper.Initialization(cs);//初始化RedisHelper的实例
+#endregion
+
+#region 数据库
+//跨域
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
@@ -108,9 +135,17 @@ else
     //这个类是用来配置MySql的版本的
     builder.Services.AddDbContext<SqlContext>(x => x.UseMySql(builder.Configuration.GetConnectionString("MySql"), new MySqlServerVersion(new Version(8, 0, 22))));
 }
+#endregion
+
+#region SignalR
 //使用SignalR
 builder.Services.AddSignalR();
+#endregion
 
+#region 支付宝支付
+//支付宝支付
+builder.Services.Configure<AlipayConfig>(builder.Configuration.GetSection("Alipay"));
+#endregion
 
 //AutoFac自动注册
 //解释:builder.Host.UseServiceProviderFactory()
@@ -136,6 +171,10 @@ app.UseSwaggerUI(s =>
     s.RoutePrefix = "";//请求swagger路径\
 });
 app.UseCors();
+
+app.UseHangfireDashboard();//配置后台仪表盘
+
+app.UseHangfireServer();//开始使用Hangfire服务
 
 //SignlR
 //app.UseEndpoints(endpoints =>
