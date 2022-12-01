@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Training.EFCore.Context;
 
@@ -10,9 +11,10 @@ using Training.EFCore.Context;
 namespace Training.EFCore.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20221130030100_demol25")]
+    partial class demol25
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,42 +226,6 @@ namespace Training.EFCore.Migrations
                     b.ToTable("Seckill_Goods");
                 });
 
-            modelBuilder.Entity("Training.Domain.Entity.Seckill.SeckillOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("Gid")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OrderId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("OrderState")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("PayMoney")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<DateTime?>("PayTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("SAId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Uid")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SeckillOrder");
-                });
-
             modelBuilder.Entity("Training.Domain.Entity.UserEntity.Clinical_Reception", b =>
                 {
                     b.Property<int>("Id")
@@ -363,8 +329,8 @@ namespace Training.EFCore.Migrations
                     b.Property<int>("Drug_Number")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderState")
-                        .HasColumnType("int");
+                    b.Property<bool>("OrderState")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

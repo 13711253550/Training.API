@@ -18,5 +18,8 @@ namespace Training.Services.IService
         Result<string> AddInquiry_Result(ViewAddInquiry_Result viewAddInquiry_Result);
         Result<object> GetresultList(int uid);
         Result<string> AddDrgOrder(List<ViewDrug> viewDrug);
+        Result<object> GetGoodsOrder(int uid);
+        ViewAddAlipayTrade GetInquiry(int id);
+        void UptState(int id);
     }
 }

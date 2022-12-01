@@ -8,5 +8,6 @@ namespace Training.Services.IService
     public interface IUserService
     {
         Result<List<User>> GetUser();
+        Result<string> AddDoctor(Doctor doctor);
     }
 }

@@ -10,8 +10,10 @@ namespace Training.Domain.Entity.UserEntity
     /// <summary>
     /// 医生信息
     /// </summary>
-    public class Doctor:Base
+    public class Doctor : Base
     {
+        private string Password;
+
         /// <summary>
         /// 医生名称
         /// </summary>
@@ -25,6 +27,16 @@ namespace Training.Domain.Entity.UserEntity
         /// <summary>
         /// 密码
         /// </summary>
-        public string password { get; set; }
+        public string password
+        {
+            get
+            {
+                return Password;
+            }
+            set
+            {
+                Password = MD5Hash.Hash.Content(value);
+            }
+        }
     }
 }

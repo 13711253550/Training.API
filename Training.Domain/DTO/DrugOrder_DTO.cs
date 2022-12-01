@@ -40,5 +40,9 @@ namespace Training.Domain.DTO
         /// 就诊记录Id
         /// </summary>
         public int Cid { get; set; }
+        /// <summary>
+        /// 药品表的ID
+        /// </summary>
+        public int Did { get; set; }
     }
 }

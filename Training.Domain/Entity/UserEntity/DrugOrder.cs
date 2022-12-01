@@ -36,7 +36,13 @@ namespace Training.Domain.Entity.UserEntity
         /// 创建时间
         /// </summary>
         public DateTime CreateTime { get; set; } = DateTime.Now;
-        //用户 
+        /// <summary>
+        /// 用户 
+        /// </summary>
         public Training.Domain.Entity.UserEntity.User.User User { get; set; }
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public int OrderState { get; set; } = 0;
     }
 }
