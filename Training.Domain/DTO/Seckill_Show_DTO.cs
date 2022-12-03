@@ -56,7 +56,10 @@ namespace Training.Domain.DTO
         /// 秒杀库存
         /// </summary>
         public string SeckillNumber { get; set; }
+<<<<<<< HEAD
         public string ActivityStatusName { get; set; }
 
+=======
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
     }
 }

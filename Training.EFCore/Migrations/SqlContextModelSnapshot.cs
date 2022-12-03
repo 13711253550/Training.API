@@ -224,6 +224,7 @@ namespace Training.EFCore.Migrations
                     b.ToTable("Seckill_Goods");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("Training.Domain.Entity.Seckill.SeckillOrder", b =>
                 {
                     b.Property<int>("Id")
@@ -260,6 +261,8 @@ namespace Training.EFCore.Migrations
                     b.ToTable("SeckillOrder");
                 });
 
+=======
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
             modelBuilder.Entity("Training.Domain.Entity.UserEntity.Clinical_Reception", b =>
                 {
                     b.Property<int>("Id")

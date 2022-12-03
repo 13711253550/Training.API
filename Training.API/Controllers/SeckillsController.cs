@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 ﻿using Aop.Api.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Training.Domain.DTO;
+=======
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
 using Training.Domain.Entity.Seckill;
 using Training.Services.IService;
 
@@ -20,6 +25,7 @@ namespace Training.API.Controllers
             this.seckillService = seckillService;
         }
 
+<<<<<<< HEAD
         /// <summary>
         /// 秒杀商品显示
         /// </summary>
@@ -34,22 +40,37 @@ namespace Training.API.Controllers
         /// 秒杀活动显示
         /// </summary>
         /// <returns></returns>
+=======
+        //秒杀商品显示
+        [HttpGet]
+        public IActionResult GetGoods()
+        {
+            return Ok(seckillService.GetGoods());
+        }
+
+        //秒杀活动显示
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         [HttpGet]
         public IActionResult GetList()
         {
             return Ok(seckillService.GetList());
         }
 
+<<<<<<< HEAD
         /// <summary>
         /// 秒杀商品库存添加到Redis
         /// </summary>
         /// <returns></returns>
+=======
+        //秒杀商品库存添加到Redis
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         [HttpGet]
         public IActionResult SetRedis()
         {
             seckillService.SetRedis();
             return Ok("成功");
         }
+<<<<<<< HEAD
         
         /// <summary>
         /// 秒杀下单
@@ -91,6 +112,15 @@ namespace Training.API.Controllers
         public IActionResult GetSeckillOrder(int uid)
         {
             return Ok(seckillService.GetSeckillOrder(uid));
+=======
+
+        [HttpPost]
+        public IActionResult Seckills(SeckillOrder SeckillOrder)
+        {
+            seckillService.Seckill(SeckillOrder);
+            return Ok("成功");
+            
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         }
     }
 }

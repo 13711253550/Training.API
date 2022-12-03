@@ -509,7 +509,11 @@ namespace Training.Services.Service
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
+<<<<<<< HEAD
         public Result<object> GetGoodsOrder(int uid)
+=======
+        public Result<object> GetDrugOrder(int uid)
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         {
             var lst = from a in DrugOrder.GetList()
                       join b in Inquiry_Result.GetList()

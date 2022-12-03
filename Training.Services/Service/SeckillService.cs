@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 ﻿using Aop.Api.Domain;
 using CSRedis;
+=======
+﻿using CSRedis;
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,7 +13,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Training.Domain.DTO;
 using Training.Domain.Entity.Seckill;
+<<<<<<< HEAD
 using Training.Domain.Entity.UserEntity.User;
+=======
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
 using Training.Domain.Shard;
 using Training.EFCore;
 using Training.Services.IService;
@@ -23,16 +30,24 @@ namespace Training.Services.Service
         public IRespotry<goods> goods;
         public IRespotry<seckill_Activity> seckill_Activity;
         public IRespotry<Seckill_Goods> Seckill_Goods;
+<<<<<<< HEAD
         public IRespotry<SeckillOrder> SeckillOrder;
         public IRespotry<User> User;
 
         public SeckillService(IRespotry<goods> goods, IRespotry<seckill_Activity> seckill_Activity, IRespotry<Seckill_Goods> Seckill_Goods, IRespotry<SeckillOrder> SeckillOrder, IRespotry<User> User)
+=======
+
+        public SeckillService(IRespotry<goods> goods, IRespotry<seckill_Activity> seckill_Activity, IRespotry<Seckill_Goods> Seckill_Goods)
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         {
             this.goods = goods;
             this.seckill_Activity = seckill_Activity;
             this.Seckill_Goods = Seckill_Goods;
+<<<<<<< HEAD
             this.SeckillOrder = SeckillOrder;
             this.User = User;
+=======
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         }
         #endregion
 
@@ -58,7 +73,11 @@ namespace Training.Services.Service
                       select new Seckill_Show_DTO
                       {
                           ActivityName = c.ActivityName,
+<<<<<<< HEAD
                           ActivityStatus = IsStart(c.StartTime, c.EndTime),
+=======
+                          ActivityStatus = c.ActivityStatus,
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
                           EndTime = c.EndTime,
                           GoodsImg = a.GoodsImg,
                           GoodsName = a.GoodsName,
@@ -68,12 +87,17 @@ namespace Training.Services.Service
                           StartTime = c.StartTime,
                           GoodsId = a.Id.ToString(),
                           SeckillId = c.Id.ToString(),
+<<<<<<< HEAD
                           SeckillNumber = c.SeckillNumber.ToString(),
                           ActivityStatusName = GetName(IsStart(c.StartTime, c.EndTime))
+=======
+                          SeckillNumber = c.SeckillNumber.ToString()
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
                       };
             return lst.ToList();
         }
 
+<<<<<<< HEAD
         private static string GetName(int v)
         {
             // 1未开始 2进行中 3已结束
@@ -116,6 +140,8 @@ namespace Training.Services.Service
             return n;
         }
 
+=======
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         /// <summary>
         /// 秒杀商品库存添加到Redis
         /// </summary>
@@ -140,6 +166,7 @@ namespace Training.Services.Service
         /// 对商品进行秒杀
         /// </summary>
         /// <param name="SeckillOrder"></param>
+<<<<<<< HEAD
         public string Seckill(SeckillOrder SeckillOrder)
         {
             //判断活动是否过期
@@ -199,18 +226,51 @@ namespace Training.Services.Service
             }
 
         }
+=======
+        public void Seckill(SeckillOrder SeckillOrder)
+        {
+            var lst = GetList();
+            //启用多线程
+            Task.Run(() =>
+            {
+                CSRedisClient redis = new CSRedisClient("127.0.0.1:6380");
+                RedisHelper.Initialization(redis);
+                //获取秒杀商品库存
+                var SeckillNumber = redis.Get("GoodSNumber" + SeckillOrder.Gid);
+                //判断商品库存是否大于0
+                if (Convert.ToInt32(SeckillNumber) > 0)
+                {
+                    redis.Set("SeckillOrder" + SeckillOrder.Uid, SeckillOrder);
+                    redis.IncrBy("GoodSNumber" + SeckillOrder.Gid, -1);
+                }
+                else
+                {
+                    Console.WriteLine("商品已售完");
+                }
+            });
+        }
+
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
 
         /// <summary>
         /// 秒杀商品支付
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+<<<<<<< HEAD
         public ViewAddAlipayTrade Getinput(int sAId, int uid)
+=======
+        public ViewAddAlipayTrade Getinput(int id)
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         {
             CSRedisClient redis = new CSRedisClient("127.0.0.1:6383");
             RedisHelper.Initialization(redis);
             //根据订单号在Redis里查询键值
+<<<<<<< HEAD
             var SeckillOrder = redis.Get("SeckillOrder" + sAId + uid);
+=======
+            var SeckillOrder = redis.Get("SeckillOrder" + id);
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
             SeckillOrder seckillOrder = JsonConvert.DeserializeObject<SeckillOrder>(SeckillOrder);
             if (seckillOrder != null)
             {
@@ -218,7 +278,11 @@ namespace Training.Services.Service
                 {
                     OutTradeNo = Guid.NewGuid().ToString(),
                     Subject = goods.GetList().Where(x => x.Id == seckillOrder.Gid).FirstOrDefault().GoodsName,
+<<<<<<< HEAD
                     TotalAmount = Math.Round(seckill_Activity.GetList().Where(x => x.Id == seckillOrder.SAId).FirstOrDefault().SeckillPrice, 2)
+=======
+                    TotalAmount = Math.Round(seckill_Activity.GetList().Where(x=>x.Id == seckillOrder.SAId).FirstOrDefault().SeckillPrice,2)
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
                 };
                 return res;
             }
@@ -228,6 +292,7 @@ namespace Training.Services.Service
             }
 
         }
+<<<<<<< HEAD
 
         /// <summary>
         /// 秒杀商品支付成功后修改订单状态
@@ -378,5 +443,7 @@ namespace Training.Services.Service
                 return true;
             }
         }
+=======
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
     }
 }

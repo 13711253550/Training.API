@@ -197,6 +197,7 @@
             支付宝支付接口
             </summary>
         </member>
+<<<<<<< HEAD
         <member name="M:Training.API.Controllers.PayController.GetDrugOrder(System.Int32)">
             <summary>
             获取到所有的订单
@@ -204,6 +205,8 @@
             <param name="Id"></param>
             <returns></returns>
         </member>
+=======
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         <member name="M:Training.API.Controllers.PayController.Pay(System.Int32)">
             <summary>
             支付宝支付
@@ -218,13 +221,18 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+<<<<<<< HEAD
         <member name="M:Training.API.Controllers.PayController.SeckillPay(System.Int32,System.Int32)">
+=======
+        <member name="M:Training.API.Controllers.PayController.SeckillPay(System.Int32)">
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
             <summary>
             秒杀订单支付
             </summary>
             <param name="Id"></param>
             <returns></returns>
         </member>
+<<<<<<< HEAD
         <member name="M:Training.API.Controllers.PayController.UptSeckillState(System.Int32,System.Int32)">
             <summary>
             秒杀订单支付完成后 会跳转到同步通知地址
@@ -232,11 +240,14 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+=======
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         <member name="T:Training.API.Controllers.SeckillsController">
             <summary>
             秒杀活动
             </summary>
         </member>
+<<<<<<< HEAD
         <member name="M:Training.API.Controllers.SeckillsController.GetGoods">
             <summary>
             秒杀商品显示
@@ -276,6 +287,8 @@
             <param name="uid"></param>
             <returns></returns>
         </member>
+=======
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         <member name="T:Training.API.Controllers.ValuesController">
             <summary>
             JWT管理

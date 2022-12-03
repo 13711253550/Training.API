@@ -34,6 +34,9 @@ namespace Training.EFCore.Context
         public DbSet<goods> goods { get; set; }
         public DbSet<seckill_Activity> seckill_Activity { get; set; }
         public DbSet<Seckill_Goods> Seckill_Goods { get; set; }
+<<<<<<< HEAD
         public DbSet<SeckillOrder> SeckillOrder { get; set; }
+=======
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
     }
 }
