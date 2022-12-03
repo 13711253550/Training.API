@@ -91,6 +91,15 @@ namespace Training.API.Controllers
         public IActionResult GetSeckillOrder(int uid)
         {
             return Ok(seckillService.GetSeckillOrder(uid));
+=======
+
+        [HttpPost]
+        public IActionResult Seckills(SeckillOrder SeckillOrder)
+        {
+            seckillService.Seckill(SeckillOrder);
+            return Ok("成功");
+            
+>>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         }
     }
 }
