@@ -50,7 +50,7 @@ namespace Training.API.Controllers
             seckillService.SetRedis();
             return Ok("成功");
         }
-        
+
         /// <summary>
         /// 秒杀下单
         /// </summary>
@@ -81,7 +81,7 @@ namespace Training.API.Controllers
             seckillService.Refund(refund_DTO);
             return Ok("成功");
         }
-
+            
         /// <summary>
         /// 用户的订单显示
         /// </summary>

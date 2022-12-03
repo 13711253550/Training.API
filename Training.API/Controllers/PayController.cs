@@ -91,7 +91,7 @@ namespace Training.API.Controllers
 
             //调用支付宝接口
             var response = aopClient.pageExecute(request);
-
+            
             return Content(response.Body, "text/html", Encoding.UTF8);
         }
 
@@ -108,6 +108,8 @@ namespace Training.API.Controllers
             return Redirect("http://localhost:8080/#/payment");
         }
 
+
+        
         /// <summary>
         /// 秒杀订单支付
         /// </summary>
@@ -120,53 +122,53 @@ namespace Training.API.Controllers
             if (opinion==true)
             {
                 ViewAddAlipayTrade input = seckillService.Getinput(sAId, uid);
-                IAopClient aopClient = new DefaultAopClient(alipayConfig.Value);
+            IAopClient aopClient = new DefaultAopClient(alipayConfig.Value);
 
-                AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
+            AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
 
-                //同步通知地址
+            //同步通知地址
 
                 request.SetReturnUrl($"http://localhost:5079/api/Pay/UptSeckillState?sAId={sAId}&uid={uid}");
 
-                //异步通知地址
+            //异步通知地址
 
-                request.SetNotifyUrl("");
+            request.SetNotifyUrl("");
 
-                //业务参数
+            //业务参数
 
-                request.BizContent = "{" +
-                    "    \"out_trade_no\":\"" + input.OutTradeNo + "\"," +
-                    "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                    "    \"total_amount\":" + input.TotalAmount + "," +
-                    "    \"subject\":\"" + input.Subject + "\"," +
-                    "    \"body\":\"" + input.Subject + "\"," +
-                    "    \"extend_params\":{" +
-                    "    }" +
-                    "  }";
+            request.BizContent = "{" +
+                "    \"out_trade_no\":\"" + input.OutTradeNo + "\"," +
+                "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
+                "    \"total_amount\":" + input.TotalAmount + "," +
+                "    \"subject\":\"" + input.Subject + "\"," +
+                "    \"body\":\"" + input.Subject + "\"," +
+                "    \"extend_params\":{" +
+                "    }" +
+                "  }";
 
-                #region 另一种写法
-                //支付宝支付完成后 会跳转到同步通知地址
+            #region 另一种写法
+            //支付宝支付完成后 会跳转到同步通知地址
 
 
-                //AlipayTradePagePayModel model = new AlipayTradePagePayModel();
-                //model.OutTradeNo = input.OutTradeNo;
-                //model.ProductCode = "FAST_INSTANT_TRADE_PAY";
-                //model.TotalAmount = input.TotalAmount.ToString();
-                //model.Subject = input.Subject;
-                //model.Body = input.Subject;
-                //model.ExtendParams = new ExtendParams();
-                //request.SetBizModel(model);
+            //AlipayTradePagePayModel model = new AlipayTradePagePayModel();
+            //model.OutTradeNo = input.OutTradeNo;
+            //model.ProductCode = "FAST_INSTANT_TRADE_PAY";
+            //model.TotalAmount = input.TotalAmount.ToString();
+            //model.Subject = input.Subject;
+            //model.Body = input.Subject;
+            //model.ExtendParams = new ExtendParams();
+            //request.SetBizModel(model);
 
-                //AlipayTradePagePayResponse response = aopClient.pageExecute(request);
+            //AlipayTradePagePayResponse response = aopClient.pageExecute(request);
 
-                //return Content(response.Body, "text/html", Encoding.UTF8);
-                #endregion
+            //return Content(response.Body, "text/html", Encoding.UTF8);
+            #endregion
 
-                //调用支付宝接口
-                var response = aopClient.pageExecute(request);
+            //调用支付宝接口
+            var response = aopClient.pageExecute(request);
 
-                return Content(response.Body, "text/html", Encoding.UTF8);
-            }
+            return Content(response.Body, "text/html", Encoding.UTF8);
+        }
             else
             {
                 return Ok("活动已过期");
