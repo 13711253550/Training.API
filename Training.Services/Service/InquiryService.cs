@@ -509,11 +509,7 @@ namespace Training.Services.Service
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
-<<<<<<< HEAD
-        public Result<object> GetGoodsOrder(int uid)
-=======
         public Result<object> GetDrugOrder(int uid)
->>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         {
             var lst = from a in DrugOrder.GetList()
                       join b in Inquiry_Result.GetList()
@@ -559,6 +555,7 @@ namespace Training.Services.Service
                       };
             return lst.FirstOrDefault();
         }
+        
         /// <summary>
         /// 修改订单状态
         /// </summary>
@@ -570,6 +567,34 @@ namespace Training.Services.Service
             lst.OrderState = 1;
             DrugOrder.Upt(lst);
             DrugOrder.Save();
+        }
+
+        public Result<object> GetGoodsOrder(int uid)
+        {
+            var lst = from a in DrugOrder.GetList()
+                      join b in Inquiry_Result.GetList()
+                      on a.inquiry_result_Id equals b.prescription_Id
+                      join c in Clinical_Reception.GetList()
+                      on b.Cid equals c.Id
+                      where c.Uid == uid
+                      where a.OrderState == 0
+                      select new
+                      {
+                          a.Drug_Id,
+                          a.Drug_Number,
+                          a.drug_img,
+                          a.drug_name,
+                          a.drug_price,
+                          a.inquiry_result_Id,
+                          a.Id,
+                      };
+
+            return new Result<object>()
+            {
+                code = stateEnum.Success,
+                data = lst.ToList(),
+                message = "查询成功"
+            };
         }
     }
 }

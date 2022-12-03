@@ -95,23 +95,17 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddControllers().AddJsonOptions(p => p.JsonSerializerOptions.PropertyNamingPolicy = null);
 //builder.Services.AddCors((x) => { x.AddPolicy("kuayu", d => d.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());});
 
-<<<<<<< HEAD
 #region 定时任务
-=======
->>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
 builder.Services.AddHangfire(configura =>
 {
     configura.UseStorage(new MemoryStorage());
     //每隔30分钟执行一次
     //调用SeckillService方法
     RecurringJob.AddOrUpdate<SeckillService>(x => x.SetRedis(), "0 0/1 * * * ? ");
-<<<<<<< HEAD
     RecurringJob.AddOrUpdate<SeckillService>(x => x.RedisToDB(), "0 0/30 * * * ? ");
 });
 #endregion
-=======
-});
->>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
+
 
 #region Redis
 ////注册CSRedis服务

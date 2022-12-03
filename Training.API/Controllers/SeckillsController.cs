@@ -81,7 +81,7 @@ namespace Training.API.Controllers
             seckillService.Refund(refund_DTO);
             return Ok("成功");
         }
-            
+
         /// <summary>
         /// 用户的订单显示
         /// </summary>
@@ -91,15 +91,6 @@ namespace Training.API.Controllers
         public IActionResult GetSeckillOrder(int uid)
         {
             return Ok(seckillService.GetSeckillOrder(uid));
-=======
-
-        [HttpPost]
-        public IActionResult Seckills(SeckillOrder SeckillOrder)
-        {
-            seckillService.Seckill(SeckillOrder);
-            return Ok("成功");
-            
->>>>>>> 7c15e5adcce266222ab5ca86412c2d67cb28f0d3
         }
     }
 }

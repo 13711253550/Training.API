@@ -128,7 +128,7 @@ namespace Training.API.Controllers
 
             //同步通知地址
 
-            request.SetReturnUrl($"http://localhost:5079/api/Pay/UptState?id={Id}");
+            request.SetReturnUrl($"http://localhost:5079/api/Pay/UptState?sAId={sAId}");
 
             //异步通知地址
 
