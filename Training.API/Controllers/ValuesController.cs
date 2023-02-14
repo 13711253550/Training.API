@@ -32,6 +32,7 @@ namespace Training.API.Controllers
         {
             return Ok(n.GetUser());
         }
+        
         /// <summary>
         /// 用户登录
         /// </summary>
@@ -42,6 +43,7 @@ namespace Training.API.Controllers
         {
             return Ok(m.Login(login));
         }
+        
         /// <summary>
         /// 用户角色返回
         /// </summary>
@@ -56,6 +58,7 @@ namespace Training.API.Controllers
                 message = "成功"
             });
         }
+        
         /// <summary>
         /// 测试
         /// </summary>
@@ -70,6 +73,7 @@ namespace Training.API.Controllers
                 message = "成功"
             });
         }
+        
         /// <summary>
         /// 测试
         /// </summary>
@@ -102,5 +106,36 @@ namespace Training.API.Controllers
                 data = m.GetToken(token)
             });
         }
+
+        /// <summary>
+        /// 声明队列
+        /// </summary>
+        /// <returns></returns>
+        //[HttpGet]
+        //public IActionResult AddQueue(string QueueName, string Key)
+        //{
+        //    RabbitMQTraining.AddQueue(QueueName, Key);
+        //    return Ok("发送成功");
+        //}
+
+        ///// <summary>
+        ///// 接收队列消息
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpGet]
+        //public IActionResult Receive(string ReceiveQueueName)
+        //{
+        //    //解释参数 交换机名称 路由键 队列名称
+        //    RabbitMQTraining.ReceiveMessage(ReceiveQueueName);
+        //    return Ok("接收成功");
+        //}
+
+        ////给队列发送消息
+        //[HttpGet]
+        //public IActionResult Send(string Message)
+        //{
+        //    RabbitMQTraining.SendMessage("testEX", "123456789", Message);
+        //    return Ok("发送成功");
+        //}
     }
 }

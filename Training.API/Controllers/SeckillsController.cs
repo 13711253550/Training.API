@@ -1,4 +1,4 @@
-﻿using Aop.Api.Domain;
+﻿  using Aop.Api.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Training.Domain.DTO;
@@ -67,7 +67,6 @@ namespace Training.API.Controllers
             }
             //判断是否秒杀成功
             return Ok(seckillService.opinion(SeckillOrder));
-            
         }
 
         /// <summary>

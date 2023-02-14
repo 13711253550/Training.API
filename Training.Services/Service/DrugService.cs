@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Training.Domain.Entity.UserEntity.User;
 using Training.Domain.Shard;
 using Training.EFCore;
 using Training.Services.IService;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Training.Services.Service
 {
@@ -76,6 +78,10 @@ namespace Training.Services.Service
                           Drug_Price = Drug.Drug_Price,
                           Drug_IsShelves = Drug.Drug_IsShelves == true ? "是":"否",
                       };
+            //Linq转SQL语句
+            var lst2 = from a in Drug.GetList().Where(x=>x.Drug_Name == "") select a;
+            var sql = lst2.ToString();
+            Console.WriteLine(sql);
             return new Result<List<Drug_DTO>>()
             {
                 code = stateEnum.Success,
@@ -423,6 +429,32 @@ namespace Training.Services.Service
 
         #endregion
 
+
+        //批量删除
+        public Result<int> DelDrug_Order(string Ids)
+        {
+            string[] arr = Ids.Split(','); 
+            foreach (var item in Ids)
+            {
+                Drug_Order.Del(Drug_Order.Find(item));
+            }
+            if (Drug_Order.Save() > 0)
+            {
+                return new Result<int>()
+                {
+                    code = stateEnum.Success,
+                    message = "删除成功"
+                };
+            }
+            else
+            {
+                return new Result<int>()
+                {
+                    code = stateEnum.Error,
+                    message = "删除失败"
+                };
+            }
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 
-﻿using Aop.Api.Domain;
+using Aop.Api.Domain;
 using CSRedis;
 using Newtonsoft.Json;
 using System;
@@ -74,7 +74,7 @@ namespace Training.Services.Service
                       };
             return lst.ToList();
         }
-        
+
         private static string GetName(int v)
         {
             // 1未开始 2进行中 3已结束
@@ -116,7 +116,7 @@ namespace Training.Services.Service
             }
             return n;
         }
-        
+
         /// <summary>
         /// 秒杀商品库存添加到Redis
         /// </summary>
@@ -278,6 +278,10 @@ namespace Training.Services.Service
                     //将订单同步到数据库
                     SeckillOrder.Add(seckillOrder);
                 }
+                else
+                {
+                    redis.IncrBy("GoodSNumber" + seckillOrder.Gid, 1);
+                }
             }
             SeckillOrder.Save();
         }
@@ -336,7 +340,7 @@ namespace Training.Services.Service
                         SName = seckill_Activity.GetList().Where(x => x.Id == seckillOrder.SAId).FirstOrDefault().ActivityName,
                         OrderId = seckillOrder.OrderId,
                         PayMoney = seckillOrder.PayMoney,
-                        PayTime = seckillOrder.PayTime == null ? "未支付" : "已支付",
+                        PayTime = seckillOrder.PayTime == null ? "未支付" : seckillOrder.PayTime.ToString(),
                         Gid = seckillOrder.Gid,
                         SAId = seckillOrder.SAId,
                         Uid = seckillOrder.Uid
@@ -352,6 +356,11 @@ namespace Training.Services.Service
             };
         }
 
+        /// <summary>
+        /// 转换
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
         private string GetOrderStateName(int state)
         {
             switch (state)
@@ -367,6 +376,11 @@ namespace Training.Services.Service
             }
         }
 
+        /// <summary>
+        /// 转换
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
         public bool OpinionSaidState(int sAId)
         {
             var lst = seckill_Activity.GetList().Where(x => x.Id == sAId).FirstOrDefault().EndTime;
@@ -379,5 +393,6 @@ namespace Training.Services.Service
                 return true;
             }
         }
+
     }
 }

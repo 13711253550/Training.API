@@ -11,6 +11,7 @@
     <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="CSRedisCore" Version="3.8.669" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Hangfire" Version="1.7.32" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.32" />
     <PackageReference Include="Hangfire.Core" Version="1.7.32" />

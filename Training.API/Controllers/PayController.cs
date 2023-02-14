@@ -46,14 +46,17 @@ namespace Training.API.Controllers
         [HttpGet]
         public IActionResult Pay(int Id)
         {
-            ViewAddAlipayTrade input = inquiryService.GetInquiry(Id);
+            ViewAddAlipayTrade input = new ViewAddAlipayTrade();
             IAopClient aopClient = new DefaultAopClient(alipayConfig.Value);
 
             AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
 
             //同步通知地址
 
-            request.SetReturnUrl($"http://localhost:5079/api/Pay/UptState?id={Id}");
+            request.SetReturnUrl($"http://localhost:5079/api/Pay/Test");
+            
+            //支付成功后跳转到百度
+            //request.SetReturnUrl("http://www.baidu.com");
 
             //异步通知地址
 
@@ -105,7 +108,13 @@ namespace Training.API.Controllers
         {
             inquiryService.UptState(id);
             //跳转http://localhost:8080/#/payment页面
-            return Redirect("http://localhost:8080/#/payment");
+            return Redirect("http://www.baidu.com");
+        }
+
+        [HttpGet]
+        public void Test()
+        {
+            Console.WriteLine("测试");
         }
 
 
@@ -128,7 +137,7 @@ namespace Training.API.Controllers
 
             //同步通知地址
 
-            request.SetReturnUrl($"http://localhost:5079/api/Pay/UptState?sAId={sAId}");
+            request.SetReturnUrl($"http://localhost:5079/api/Pay/UptSeckillState?sAId={sAId}&uid={uid}");
 
             //异步通知地址
 

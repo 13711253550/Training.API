@@ -101,7 +101,7 @@ builder.Services.AddHangfire(configura =>
     configura.UseStorage(new MemoryStorage());
     //每隔30分钟执行一次
     //调用SeckillService方法
-    RecurringJob.AddOrUpdate<SeckillService>(x => x.SetRedis(), "0 0/1 * * * ? ");
+    RecurringJob.AddOrUpdate<SeckillService>(x => x.SetRedis(), "0 0 00 * * ? ");
     RecurringJob.AddOrUpdate<SeckillService>(x => x.RedisToDB(), "0 0/30 * * * ? ");
 });
 #endregion
@@ -183,6 +183,13 @@ app.UseHangfireServer();//开始使用Hangfire服务
 //{
 //    endpoints.MapHub<SignaIRChat>("/chatHub");
 //});
+
+
+app.Use(async (context, next) =>
+{
+    Console.WriteLine("中间件1");
+    await next.Invoke(context);
+});
 
 app.MapHub<SignaIRChatService>("/chatHub");
 
